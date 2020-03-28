@@ -1,5 +1,6 @@
 #include "qr.h"
-#include <libusb1.0/libusb.h>
+#include <errno.h>
+#include <libusb-1.0/libusb.h>
 #include <stdio.h>
 
 #define bInterfaceNumber 0
@@ -15,8 +16,8 @@ static libusb_device_handle* s_handle = 0;
  * @retval errno
  */
 int qr_init(void) {
-    libusb_version const* v = libusb_get_version();
-    printf("libusb: version %hu.%hu.%hu.%hu%s\n", v->major, v->minor, v->micro, v->nano, v->rc);
+    // libusb_version const* v = libusb_get_version();
+    // printf("libusb: version %hu.%hu.%hu.%hu%s\n", v->major, v->minor, v->micro, v->nano, v->rc);
     int res = libusb_init(&s_ctx);
     if (res < 0) {
         return res;
@@ -29,7 +30,10 @@ int qr_init(void) {
  * @retval 0 成功
  * @retval errno
  */
-int qr_deinit(void) { return libusb_exit(s_ctx); }
+int qr_deinit(void) {
+    libusb_exit(s_ctx);
+    return 0;
+}
 
 /**
  * @retval 0 成功
@@ -63,7 +67,7 @@ int qr_close(void) {
         return res;
     }
     // libusb_reset_device(s_handle); // USB抜け時に固まるのでこの処理はしない
-    res = libusb_close(s_handle);
+    libusb_close(s_handle);
     s_handle = 0;
     return 0;
 }
@@ -75,15 +79,11 @@ int qr_close(void) {
  * @retval errno
  */
 int qr_read(uint8_t* buf, uint32_t* size) {
-    const int timeout = 100;
+    const int timeout = 0;
     int actual_length = 0;
-    int res = libusb_interrupt_transfer(s_handle, EP_IN, buf, 8, actual_length, timeout);
+    int res = libusb_interrupt_transfer(s_handle, EP_IN, buf, 8, &actual_length, timeout);
     if (res == LIBUSB_TRANSFER_COMPLETED) {
         *size = actual_length;
-        return 0;
-    }
-    if (res == LIBUSB_TRANSFER_TIMED_OUT) {
-        *size = 0;
         return 0;
     }
     fprintf(stderr, "libusb_interrupt_transfer returns %s in function qr_read\n",

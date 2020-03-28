@@ -2,6 +2,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 // mode定義
 #define GPIO_INPUT 0
 #define GPIO_OUTPUT 1
@@ -50,3 +54,7 @@ void gpio_write(uint32_t pin, uint32_t pol);
  * @return pol
  */
 uint32_t gpio_read(uint32_t pin);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus

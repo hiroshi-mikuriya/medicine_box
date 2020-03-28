@@ -37,6 +37,8 @@ public:
 
 bool s_stop_led_thread = false;
 void led_thread() {
+    gpio_configure(LED_RED, GPIO_OUTPUT);
+    gpio_configure(LED_GREEN, GPIO_OUTPUT);
     while (!s_stop_led_thread) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         gpio_write(LED_RED, 0);
@@ -80,12 +82,6 @@ int main(int argc, const char* argv[]) {
     try {
         gpio_initializer ginit;
         qr_initializer qinit;
-        if (gpio_configure(LED_RED, GPIO_OUTPUT)) {
-            throw std::runtime_error("failed to configure RED LED");
-        }
-        if (gpio_configure(LED_GREEN, GPIO_OUTPUT)) {
-            throw std::runtime_error("failed to configure RED GREEN");
-        }
         std::thread th(led_thread);
         try {
             qr_thread();
