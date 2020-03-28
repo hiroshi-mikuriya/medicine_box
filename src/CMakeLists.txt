@@ -1,10 +1,3 @@
-#
-# @file   CMakeLists.txt
-# @author Motion Lib, inc.
-# @copyright Copyright© 2020 Motion Lib, inc. 
-#
-# DO NOT USE THIS SOFTWARE WITHOUT THE SOFTWARE LICENSE AGREEMENT.
-#
 cmake_minimum_required(VERSION 3.6)
 project(medicine_box)
   
@@ -33,6 +26,7 @@ find_package(Threads REQUIRED)
  
 file(GLOB SOURCES
     *.cpp
+    *.c
 )
 
 include_directories(
