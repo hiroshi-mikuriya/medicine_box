@@ -4,7 +4,7 @@ require 'fileutils'
 
 ROOT = File.expand_path(File.dirname($PROGRAM_NAME))
 BUILD = 'src/build'
-SERVICE = 'medicine_box'
+SERVICE = 'medicine-box'
 FileUtils.chdir(ROOT)
 FileUtils.mkdir_p(BUILD)
 FileUtils.chdir(BUILD)

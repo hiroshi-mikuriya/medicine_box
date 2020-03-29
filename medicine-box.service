@@ -1,5 +1,5 @@
 [Unit]
-Description = medicine box
+Description = medicine-box
 After = rc-local.service
 
 [Service]
