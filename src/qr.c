@@ -62,10 +62,7 @@ int qr_open(void) {
  * @retval errno
  */
 int qr_close(void) {
-    int res = libusb_release_interface(s_handle, bInterfaceNumber);
-    if (res < 0) {
-        return res;
-    }
+    libusb_release_interface(s_handle, bInterfaceNumber);
     // libusb_reset_device(s_handle); // USB抜け時に固まるのでこの処理はしない
     libusb_close(s_handle);
     s_handle = 0;
