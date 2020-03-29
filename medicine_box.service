@@ -1,0 +1,15 @@
+[Unit]
+Description = medicine box
+After = rc-local.service
+
+[Service]
+Type = simple
+WorkingDirectory = /home/pi/medicine_box/src/build
+ExecStart = /home/pi/medicine_box/src/build/medicine_box
+StandardOutput = journal
+StandardError = journal
+Restart = on-failure
+RestartSec = 3s
+
+[Install]
+WantedBy = multi-user.target
