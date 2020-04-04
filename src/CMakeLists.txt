@@ -8,15 +8,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(CMAKE_C_COMPILER gcc)
     set(CMAKE_CXX_COMPILER g++)
     set(CMAKE_CXX_FLAGS "-std=c++11 -ffunction-sections -O3 -Wall -Wsign-compare -Wconversion")
-    set(LIBUSB_INC /usr/local/include)
-    set(LIBUSB /usr/local/lib/libusb-1.0.so -latomic)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    message( "Build for Darwin with clang++" )
-    set(CMAKE_C_COMPILER clang)
-    set(CMAKE_CXX_COMPILER clang++)
-    set(CMAKE_CXX_FLAGS "-std=c++11 -ffunction-sections -O3 -Wall -Wsign-compare -Wconversion")
-    set(LIBUSB_INC /usr/local/include)
-    set(LIBUSB /usr/local/lib/libusb-1.0.dylib)
+    set(LIBS -lusb-1.0 -latomic -lwiringPi)
 else()
     message( "unknown platform" )
     return(1)
@@ -31,7 +23,7 @@ file(GLOB SOURCES
 
 include_directories(
     .
-    ${LIBUSB_INC}
+    /usr/local/include
 )
  
 add_executable(
@@ -42,5 +34,5 @@ add_executable(
 target_link_libraries(
     ${CMAKE_PROJECT_NAME}
     ${CMAKE_THREAD_LIBS_INIT}
-    ${LIBUSB}
+    ${LIBS}
 )
