@@ -35,7 +35,7 @@ void sound_thread() {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         auto now = std::chrono::system_clock::now();
         if (now - s_last_rcv_time.load() < std::chrono::milliseconds(110)) {
-            system("mpg321 sound/decision5.mp3");
+            system("mpg321 sound/Cash_Register-Beep01-1.mp3");
         }
     }
 }

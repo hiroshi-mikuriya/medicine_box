@@ -11,10 +11,7 @@ FileUtils.chdir(BUILD)
 `cmake #{ROOT}/src && make`
 from = "#{ROOT}/#{SERVICE}.service"
 to = "/etc/systemd/system/#{SERVICE}.service"
-if File.exist? to
-  `sudo systemctl disable #{SERVICE}`
-  `sudo rm #{to}`
-end
+`sudo systemctl disable #{SERVICE}` if File.exist? to
 `sudo ln -s #{from} /etc/systemd/system`
 `sudo systemctl enable #{SERVICE}`
 `sudo systemctl restart #{SERVICE}`
