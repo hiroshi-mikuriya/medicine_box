@@ -4,6 +4,7 @@ After = rc-local.service
 
 [Service]
 Type = simple
+WorkingDirectory = /home/pi/medicine_box
 ExecStart = /home/pi/medicine_box/build/medicine_box
 StandardOutput = journal
 StandardError = journal

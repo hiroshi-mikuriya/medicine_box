@@ -11,5 +11,6 @@
 !*.rb
 !*.md
 !*.service
+!*.mp3
 !CMakeLists.txt
 CMakeFiles

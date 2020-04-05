@@ -16,6 +16,7 @@ std::atomic<std::chrono::system_clock::time_point> s_last_rcv_time(
 std::atomic_bool s_stop_thread(false);
 std::atomic_bool s_is_opened_qr_device(false);
 
+/// clock_thread
 void clock_thread() {
     TM1637 tm(TM1637_CLK_PIN, TM1637_DIO_PIN);
     while (!s_stop_thread) {
@@ -25,6 +26,17 @@ void clock_thread() {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
         tm.numbers(t->tm_hour, t->tm_min, false);
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+}
+
+/// sound_thread
+void sound_thread() {
+    while (!s_stop_thread) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        auto now = std::chrono::system_clock::now();
+        if (now - s_last_rcv_time.load() < std::chrono::milliseconds(110)) {
+            system("mpg321 sound/decision5.mp3");
+        }
     }
 }
 
@@ -88,6 +100,7 @@ int main(int argc, const char* argv[]) {
             throw std::runtime_error("failed to init USB");
         std::thread th0(led_thread);
         std::thread th1(clock_thread);
+        std::thread th2(sound_thread);
         try {
             qr_thread();
         }
@@ -97,6 +110,7 @@ int main(int argc, const char* argv[]) {
         s_stop_thread = true;
         th0.join();
         th1.join();
+        th2.join();
     }
     catch (std::exception const& e) {
         std::cerr << e.what() << std::endl;
