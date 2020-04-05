@@ -17,9 +17,8 @@ std::atomic_bool s_stop_thread(false);
 std::atomic_bool s_is_opened_qr_device(false);
 
 /// clock_thread
-void clock_thread() {
+void clock_thread(TM1637& tm) {
     while (!s_stop_thread) {
-        TM1637 tm(TM1637_CLK_PIN, TM1637_DIO_PIN);
         time_t now = std::time(nullptr);
         std::tm* t = std::localtime(&now);
         tm.numbers(t->tm_hour, t->tm_min, true);
@@ -42,9 +41,6 @@ void sound_thread() {
 
 /// led_thread
 void led_thread() {
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, 0);
-    std::this_thread::sleep_for(std::chrono::seconds(1));
     while (!s_stop_thread) {
         if (!s_is_opened_qr_device) {
             digitalWrite(LED_PIN, 1);
@@ -98,8 +94,10 @@ int main(int argc, const char* argv[]) {
             throw std::runtime_error("failed to init wiringPi");
         if (qr_init())
             throw std::runtime_error("failed to init USB");
+        pinMode(LED_PIN, OUTPUT);
+        TM1637 tm(TM1637_CLK_PIN, TM1637_DIO_PIN);
         std::thread th0(led_thread);
-        std::thread th1(clock_thread);
+        std::thread th1(clock_thread, std::ref(tm));
         std::thread th2(sound_thread);
         try {
             qr_thread();
