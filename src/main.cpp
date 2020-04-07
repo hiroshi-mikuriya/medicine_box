@@ -42,7 +42,7 @@ void sound_thread() {
 /// led_thread
 void led_thread() {
     auto last_blink_time = std::chrono::system_clock::now();
-    constexpr std::chrono::seconds interval(1);
+    constexpr std::chrono::seconds interval(2);
     while (!s_stop_thread) {
         if (!s_is_opened_qr_device) {
             digitalWrite(LED_PIN, 1);
