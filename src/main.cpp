@@ -52,7 +52,7 @@ void led_thread() {
         }
         auto now = std::chrono::system_clock::now();
         if (now - s_last_rcv_time.load() < std::chrono::milliseconds(400) &&
-            std::chrono::seconds(2) < now - last_blink_time) {
+            std::chrono::seconds(3) < now - last_blink_time) {
             digitalWrite(LED_PIN, 1);
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
             digitalWrite(LED_PIN, 0);
