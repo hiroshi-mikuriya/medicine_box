@@ -53,3 +53,34 @@ $ git clone https://github.com/hiroshi-mikuriya/medicine_box
 $ cd medicine_box
 $ ruby install
 ```
+
+## HW構成
+
+```
+Raspberry Pi
+├── USB
+│   ├── QM30-SU（QRコードリーダー）
+│   └── DAC（DuKabel USB オーディオ 変換アダプタ）
+└── GPIO
+    ├── DS1307（RTC）
+    ├── GREEN LED
+    └── DiyStudio 5色 TM1637 4桁LED 0.56インチ（7 Segment LED）
+```
+
+### GPIOマッピング
+
+|PIN|GPIO|Assign|
+|:---|:---|:---|
+|1|3.3V|RTC|
+|2|5V|RTC|
+|3|SDA|RTC|
+|4|5V|RTC|
+|5|SCL|RTC|
+|6|GND|RTC|
+|7|GPIO4|RTC|
+|8|TXD0|RTC|
+|9|GND|RTC|
+|10|RXD0|RTC|
+|11|GPIO17|TM1637 DIO|
+|13|GPIO27|TM1637 CLK|
+|15|GPIO22|GREEN LED|
